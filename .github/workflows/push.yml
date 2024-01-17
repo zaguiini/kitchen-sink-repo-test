@@ -8,10 +8,11 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 2
-    - name: Store files from repo
-      run: |
-        find . -mindepth 1 -not -path "./.git*" > .git-ftp-files.log
-        echo !.git-ftp-files.log > .git-ftp-include
+    # - name: Store files from repo
+    #   run: |
+    #     find . -mindepth 1 -not -path "./.git*" > .git-ftp-files.log
+    #     echo !.git-ftp-files.log > .git-ftp-include
+    # ^ Should not be necessary. TODO: Figure out how to log the synced files with git-ftp
     - name: FTP-Deploy-Action
       uses: Automattic/FTP-Deploy-Action@3.1.2
       with:
