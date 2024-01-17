@@ -8,6 +8,10 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 2
+    - name: Store files from repo
+      run: |
+        find . -mindepth 1 > .git-ftp-files.log
+        echo !.git-ftp-files.log > .git-ftp-include
     - name: FTP-Deploy-Action
       uses: Automattic/FTP-Deploy-Action@3.1.2
       with:
@@ -15,14 +19,3 @@ jobs:
         ftp-username: ${{ secrets.FTP_USER }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
         known-hosts: "sftp.wp.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwfT/YEhOKO2Z0+XrjRqUS5Q2Ali6AlhOhZtzlIfMOvm03SypeDJH70tlUHasS+nm0SnZ01fOiEeAXa91ZhMihIYUT3nTGuiA2J3uVYsySCJefvhWc0kg1FbEus3V3cVmx4e3XctdkzLbOgPNngypZocbP+8yCpbx6Kb9lihmgTjgGn2QzbK1enRSzsN/CbjVhej9jwukbrWqdCrQsKAsoZ2p6YCtcKbHS+Yy4RwcO9PxZUBkeMXUrejms027bRcdVfwf55hWSD9xYEHpEHupkSL4ofWs3UKeRGz+jCCzl7Nu0S6VSwK4Zzll0auHI0Hwh8WKTJbSn1gxCdF93/rmP"
-    - name: Store files from repo
-      run: |
-        find . -mindepth 1 > .git-ftp-files.log
-    - name: Send it to Atomic
-      uses: bayssmekanique/action-simple-file-upload@v2
-      with:
-        user: ${{ secrets.FTP_USER }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        host: sftp.wp.com
-        src: .git-ftp-files.log
-        dest: /htdocs/.git-ftp-files.log
