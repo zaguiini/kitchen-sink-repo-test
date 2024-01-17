@@ -8,6 +8,9 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 2
+    - name: Store files from repo
+      run: |
+        find . -mindepth 1 > .git-ftp-files.log
     - name: FTP-Deploy-Action
       uses: Automattic/FTP-Deploy-Action@3.1.2
       with:
