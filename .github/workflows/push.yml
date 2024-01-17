@@ -10,7 +10,7 @@ jobs:
         fetch-depth: 2
     - name: Store files from repo
       run: |
-        find . -mindepth 1 > .git-ftp-files.log
+        find . -mindepth 1 -not -path "./.git*" > .git-ftp-files.log
         echo !.git-ftp-files.log > .git-ftp-include
     - name: FTP-Deploy-Action
       uses: Automattic/FTP-Deploy-Action@3.1.2
