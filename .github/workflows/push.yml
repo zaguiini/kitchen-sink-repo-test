@@ -11,7 +11,7 @@ jobs:
     - name: Add untracked file
       run: |
         # this is a processed file, like a composer vendor folder or npm build folder
-        touch untracked-file.php
+        touch an-untracked-file.php
     - name: Insert .wpcom-ignore file
       run: |
         # this will be passed as an argument to the LFTP client when transferring files
@@ -43,4 +43,4 @@ jobs:
           cd /htdocs/working-area/${{ github.event.repository.name }}
           find . ! -path './${{ github.sha }}*' -delete
           # removes broken symlinks
-          find /htdocs -xtype l -delete
+          find /srv/htdocs -xtype l -delete
