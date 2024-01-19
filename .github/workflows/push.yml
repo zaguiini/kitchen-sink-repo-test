@@ -25,6 +25,7 @@ jobs:
         # lftp settings
         onlyNewer: true
         settings: 'sftp:auto-confirm=yes'
+        delete: true
         # Mirror command options
         localDir: '.'
         remoteDir: '/htdocs'
