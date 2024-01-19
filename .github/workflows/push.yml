@@ -29,6 +29,8 @@ jobs:
         ftp-post-sync-commands: |
           # remove the .wpcom-ignore file from remote
           rm /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/.wpcom-ignore
+          # remove .deploy-revision file from remote, this is a file created by the action
+          rm /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/.deploy-revision
     - name: Link the files in htdocs and remove old references
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -38,7 +40,7 @@ jobs:
         port: 22
         script: |
           # symlink the contents of current version into htdocs
-          cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }} /htdocs
+          cp -RsfT /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }} /htdocs
           # removes older copies from working area
           cd /htdocs/working-area/${{ github.event.repository.name }}
           find . ! -path './${{ github.sha }}*' -delete
