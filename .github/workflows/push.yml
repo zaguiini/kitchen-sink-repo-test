@@ -16,11 +16,12 @@ jobs:
         find . -mindepth 1 -not -path "./.git*" > .git-ftp-files.log
         echo !.git-ftp-files.log > .git-ftp-include
     - name: Deploy files via SFTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: milanmk/actions-file-deployer@master
       with:
-        server: sftp.wp.com
-        username: ${{ secrets.FTP_USER }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        remote-protocol: "sftp"
+        remote-host: sftp.wp.com
+        remote-user: ${{ secrets.FTP_USER }}
+        remote-password: ${{ secrets.FTP_PASSWORD }}
         protocol: ftps-legacy
-        server-dir: ./htdocs/
+        remote-path: /home/150426636/htdocs
         log-level: verbose
