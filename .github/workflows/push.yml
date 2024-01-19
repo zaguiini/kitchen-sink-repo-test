@@ -44,5 +44,5 @@ jobs:
           # removes older copies from working area
           cd /srv/htdocs/working-area/${{ github.event.repository.name }}
           find . ! -path './${{ github.sha }}*' -delete
-          # removes broken symlinks
-          find /srv/htdocs -xtype l -delete
+          # removes broken symlinks for that repos working area
+          find /srv/htdocs -xtype l -exec readlink {} \; | grep /srv/htdocs/working-area/${{ github.event.repository.name }} | xargs rm
