@@ -21,4 +21,4 @@ jobs:
         remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
         sync: full # support untracked files
         ftp-post-sync-commands: |
-          cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /htdocs
+          pwd
