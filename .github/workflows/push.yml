@@ -18,5 +18,9 @@ jobs:
         remote-host: sftp.wp.com
         remote-user: ${{ secrets.FTP_USER }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
-        remote-path: /htdocs
+        remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
         sync: full # support untracked files
+        ftp-post-sync-commands: |
+          cp -Rsf /srv/htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /srv/htdocs
+          rm -rf /srv/htdocs/working-area/${{ github.event.repository.name }}/!(${{ github.sha }})
+          find /srv/htdocs/ -xtype l -delete
