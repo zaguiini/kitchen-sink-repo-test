@@ -11,10 +11,6 @@ jobs:
     - name: Add untracked file
       run: |
         touch untracked-file-probably-composer-vendor.php
-    - name: Store files from repo
-      run: |
-        find . -mindepth 1 -not -path "./.git*" > .git-ftp-files.log
-        echo !.git-ftp-files.log > .git-ftp-include
     - name: Deploy files via SFTP
       uses: milanmk/actions-file-deployer@master
       with:
@@ -23,4 +19,3 @@ jobs:
         remote-user: ${{ secrets.FTP_USER }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
         remote-path: /home/150426636/htdocs
-        sync: full
