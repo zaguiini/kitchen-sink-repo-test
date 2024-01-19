@@ -11,14 +11,22 @@ jobs:
     - name: Add untracked file
       run: |
         touch a-new-file.php
-    - name: Deploy files via SFTP
-      uses: milanmk/actions-file-deployer@master
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
       with:
-        remote-protocol: "sftp"
-        remote-host: sftp.wp.com
-        remote-user: ${{ secrets.FTP_USER }}
-        remote-password: ${{ secrets.FTP_PASSWORD }}
-        remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
-        sync: full # support untracked files
-        ftp-post-sync-commands: |
-          command cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /htdocs
+        host: sftp.wp.com
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 22
+        script: whoami
+    # - name: Deploy files via SFTP
+    #   uses: milanmk/actions-file-deployer@master
+    #   with:
+    #     remote-protocol: sftp
+    #     remote-host: sftp.wp.com
+    #     remote-user: ${{ secrets.FTP_USER }}
+    #     remote-password: ${{ secrets.FTP_PASSWORD }}
+    #     remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
+    #     sync: full # support untracked files
+    # - name: Let WPCOM know that the transfer succeeded
+    #   run: |
