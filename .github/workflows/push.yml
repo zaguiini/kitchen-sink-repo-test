@@ -23,14 +23,14 @@ jobs:
         remote-host: sftp.wp.com
         remote-user: ${{ secrets.FTP_USER }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
-        remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
+        remote-path: /srv/htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
         sync: full # support untracked files
         ftp-mirror-options: --exclude-glob-from=.wpcom-ignore # do not transfer these files
         ftp-post-sync-commands: |
           # remove the .wpcom-ignore file from remote
-          rm /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/.wpcom-ignore
+          rm /srv/htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/.wpcom-ignore
           # remove .deploy-revision file from remote, this is a file created by the action
-          rm /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/.deploy-revision
+          rm /srv/htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/.deploy-revision
     - name: Link the files in htdocs and remove old references
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -40,9 +40,9 @@ jobs:
         port: 22
         script: |
           # symlink the contents of current version into htdocs
-          cp -RsfT /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }} /htdocs
+          cp -RsfT /srv/htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }} /srv/htdocs
           # removes older copies from working area
-          cd /htdocs/working-area/${{ github.event.repository.name }}
+          cd /srv/htdocs/working-area/${{ github.event.repository.name }}
           find . ! -path './${{ github.sha }}*' -delete
           # removes broken symlinks
           find /srv/htdocs -xtype l -delete
