@@ -19,3 +19,4 @@ jobs:
         remote-user: ${{ secrets.FTP_USER }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
         remote-path: /home/150426636/htdocs
+        artifacts: true
