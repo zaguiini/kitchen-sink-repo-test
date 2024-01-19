@@ -28,7 +28,10 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         port: 22
         script: |
+          # symlink the contents of current version into htdocs
           cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /htdocs
+          # removes older copies from working area
           cd /htdocs/working-area/${{ github.event.repository.name }}
           find . ! -path './${{ github.sha }}*' -delete
+          # removes broken symlinks
           find /htdocs -xtype l -delete
