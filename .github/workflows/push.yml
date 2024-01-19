@@ -20,7 +20,7 @@ jobs:
         remote-password: ${{ secrets.FTP_PASSWORD }}
         remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
         sync: full # support untracked files
-    - name: Link the files in htdocs
+    - name: Link the files in htdocs and remove old references
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: sftp.wp.com
@@ -30,5 +30,5 @@ jobs:
         script: |
           cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /htdocs
           cd /htdocs/working-area/${{ github.event.repository.name }}
-          rm -rf $(ls -A | grep -v ${{ github.sha }})
+          find . ! -path './${{ github.sha }}*' -delete
           find /htdocs -xtype l -delete
