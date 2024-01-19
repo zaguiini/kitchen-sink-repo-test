@@ -10,6 +10,7 @@ jobs:
         fetch-depth: 2
     - name: Add untracked file
       run: |
+        # this is a processed file, like a composer vendor folder or npm build folder
         touch a-new-file.php
     - name: Deploy files via SFTP
       uses: milanmk/actions-file-deployer@master
