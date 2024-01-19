@@ -26,7 +26,9 @@ jobs:
         remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
         sync: full # support untracked files
         ftp-mirror-options: --exclude-glob-from=.wpcom-ignore # do not transfer these files
-        ftp-post-sync-commands: command rm .wpcom-ignore # remove the .wpcom-ignore file from remote
+        ftp-post-sync-commands: |
+          # remove the .wpcom-ignore file from remote
+          rm /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/.wpcom-ignore
     - name: Link the files in htdocs and remove old references
       uses: appleboy/ssh-action@v1.0.3
       with:
