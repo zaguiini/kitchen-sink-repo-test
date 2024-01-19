@@ -11,6 +11,9 @@ jobs:
     - name: Add untracked file
       run: |
         touch a-new-file.php
+    # - name: Add file wrangling tool
+    #   run: |
+    #     cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /htdocs
     - name: Deploy files via SFTP
       uses: milanmk/actions-file-deployer@master
       with:
@@ -21,4 +24,6 @@ jobs:
         remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
         sync: full # support untracked files
         ftp-post-sync-commands: |
+          echo start
           pwd
+          echo end
