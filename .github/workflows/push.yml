@@ -10,7 +10,7 @@ jobs:
         fetch-depth: 2
     - name: Add untracked file
       run: |
-        touch another-untracked-file-will-it-delete.php
+        touch a-new-file.php
     - name: Deploy files via SFTP
       uses: milanmk/actions-file-deployer@master
       with:
@@ -18,5 +18,5 @@ jobs:
         remote-host: sftp.wp.com
         remote-user: ${{ secrets.FTP_USER }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
-        remote-path: /home/150426636/htdocs
+        remote-path: ~/htdocs
         sync: full # support untracked files
