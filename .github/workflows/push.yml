@@ -11,7 +11,11 @@ jobs:
     - name: Add untracked file
       run: |
         # this is a processed file, like a composer vendor folder or npm build folder
-        touch a-new-file.php
+        touch untracked-file.php
+    - name: Insert .wpcom-ignore file
+      run: |
+        # this will be passed as an argument to the LFTP client when transferring files
+        echo package.json > .wpcom-ignore
     - name: Deploy files via SFTP
       uses: milanmk/actions-file-deployer@master
       with:
@@ -21,6 +25,8 @@ jobs:
         remote-password: ${{ secrets.FTP_PASSWORD }}
         remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
         sync: full # support untracked files
+        ftp-mirror-options: --exclude-glob-from=.wpcom-ignore # do not transfer these files
+        ftp-post-sync-commands: rm .wpcom-ignore # remove the .wpcom-ignore file from remote
     - name: Link the files in htdocs and remove old references
       uses: appleboy/ssh-action@v1.0.3
       with:
