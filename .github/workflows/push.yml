@@ -11,17 +11,16 @@ jobs:
     - name: Add untracked file
       run: |
         touch a-new-file.php
-    - name: rsync deployments
-      uses: burnett01/rsync-deployments@5.2
+    - name: Deploy files via SFTP
+      uses: milanmk/actions-file-deployer@master
       with:
-        switches: -avzr --delete --exclude="" --include="" --filter=""
-        path: src/
-        remote_path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
-        remote_host: sftp.wp.com
-        remote_port: 22
-        remote_user: ${{ secrets.FTP_USER }}
-        remote_password: ${{ secrets.FTP_PASSWORD }}
-    - name: executing remote ssh commands using password
+        remote-protocol: sftp
+        remote-host: sftp.wp.com
+        remote-user: ${{ secrets.FTP_USER }}
+        remote-password: ${{ secrets.FTP_PASSWORD }}
+        remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
+        sync: full # support untracked files
+    - name: Link the files in htdocs
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: sftp.wp.com
@@ -29,15 +28,4 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         port: 22
         script: |
-          whoami
-    # - name: Deploy files via SFTP
-    #   uses: milanmk/actions-file-deployer@master
-    #   with:
-    #     remote-protocol: sftp
-    #     remote-host: sftp.wp.com
-    #     remote-user: ${{ secrets.FTP_USER }}
-    #     remote-password: ${{ secrets.FTP_PASSWORD }}
-    #     remote-path: /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}
-    #     sync: full # support untracked files
-    # - name: Let WPCOM know that the transfer succeeded
-    #   run: |
+          cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /htdocs
