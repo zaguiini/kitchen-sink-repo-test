@@ -29,3 +29,6 @@ jobs:
         port: 22
         script: |
           cp -Rsf /htdocs/working-area/${{ github.event.repository.name }}/${{ github.sha }}/* /htdocs
+          cd /htdocs/working-area/${{ github.event.repository.name }}
+          rm -rf $(ls -A | grep -v ${{ github.sha }})
+          find /htdocs -xtype l -delete
