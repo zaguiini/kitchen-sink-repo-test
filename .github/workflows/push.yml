@@ -18,5 +18,5 @@ jobs:
         remote-host: sftp.wp.com
         remote-user: ${{ secrets.FTP_USER }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
-        remote-path: /home/150426636/htdocs
+        remote-path: /htdocs
         sync: full # support untracked files
