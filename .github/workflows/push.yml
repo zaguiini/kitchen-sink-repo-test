@@ -22,6 +22,4 @@ jobs:
         remote-host: sftp.wp.com
         remote-user: ${{ secrets.FTP_USER }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps-legacy
         remote-path: /home/150426636/htdocs
-        log-level: verbose
