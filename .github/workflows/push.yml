@@ -8,6 +8,7 @@ jobs:
     - uses: actions/checkout@master
       with:
         submodules: true
+        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Add untracked file
       run: |
         # this is a processed file, like a composer vendor folder or npm build folder
