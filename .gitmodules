@@ -1,0 +1,6 @@
+[submodule "public"]
+	path = wp-content/mu-plugins/public-submodule
+	url = https://github.com/zaguiini/public-submodule.git
+[submodule "private"]
+	path = wp-content/mu-plugins/private-submodule
+	url = git@github.com:zaguiini/private-submodule.git
