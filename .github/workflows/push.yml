@@ -20,6 +20,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: wpcom-deployment-${{ github.event.repository.name }}/${{ github.sha }}
+        path: .
     # - name: Link the files in htdocs and remove old references
     #   uses: appleboy/ssh-action@v1.0.3
     #   with:
