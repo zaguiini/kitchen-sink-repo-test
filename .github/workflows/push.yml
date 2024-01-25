@@ -21,13 +21,21 @@ jobs:
       with:
         args: zip -r artifact.zip . --exclude @.wpcom-ignore
     - uses: actions/upload-artifact@v4
+      id: artifact-upload-step
       with:
-        name: artifact.zip
+        name: my-artifact
         path: artifact.zip
-    - name: Upload to WordPress.com
-      uses: fjogeleit/http-request-action@v1
-      with:
-        url: https://public-api.wordpress.com/wpcom/v2/code-deployment
-        method: POST
-        file: artifact.zip
-        customHeaders: '{"X-WPCOM-Connection-Token":"${{ secrets.WPCOM_CONNECTION_TOKEN }}"}'
+    - name: Output artifact URL
+      run:  echo 'Artifact URL is ${{ steps.artifact-upload-step.outputs.artifact-url }}'
+
+    # - uses: actions/upload-artifact@v4
+    #   with:
+    #     name: artifact.zip
+    #     path: artifact.zip
+    # - name: Upload to WordPress.com
+    #   uses: fjogeleit/http-request-action@v1
+    #   with:
+    #     url: https://public-api.wordpress.com/wpcom/v2/code-deployment
+    #     method: POST
+    #     file: artifact.zip
+    #     customHeaders: '{"X-WPCOM-Connection-Token":"${{ secrets.WPCOM_CONNECTION_TOKEN }}"}'
