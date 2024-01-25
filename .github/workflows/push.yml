@@ -1,5 +1,9 @@
-on: push
 name: Publish Website
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
 jobs:
   FTP-Deploy-Action:
     name: FTP-Deploy-Action
@@ -9,37 +13,7 @@ jobs:
       with:
         submodules: true
         ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: Add untracked file
-      run: |
-        # this is a processed file, like a composer vendor folder or npm build folder
-        touch an-untracked-file.php
-    - name: Ignore some files
-      run: |
-        echo \*.git\* >> .wpcom-ignore
-        echo .wpcom-ignore >> .wpcom-ignore
-    - uses: montudor/action-zip@v1
-      with:
-        args: zip -r artifact.zip . --exclude @.wpcom-ignore
     - uses: actions/upload-artifact@v4
-      id: artifact-upload-step
       with:
         name: my-artifact
         path: artifact.zip
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r .github/workflows/requirements.txt
-    - name: Deploy to WPCOM
-      run: python .github/workflows/deploy.py
-      env:
-        WPCOM_CONNECTION_TOKEN: ${{ secrets.WPCOM_CONNECTION_TOKEN }}
-        ARTIFACT_URL: ${{ steps.artifact-upload-step.outputs.artifact-url }}
-        COMMIT_SHA: ${{ github.sha }}
-    - uses: joutvhu/delete-artifact@v2
-      if: always()
-      with:
-        name: my-artifact
