@@ -4,6 +4,8 @@ on:
     branches:
       - master
   workflow_dispatch:
+env:
+  DEPLOY_TO_WPCOM: true
 jobs:
   FTP-Deploy-Action:
     name: FTP-Deploy-Action
