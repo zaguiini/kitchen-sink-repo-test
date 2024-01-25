@@ -27,7 +27,9 @@ jobs:
         path: artifact.zip
     - name: Output artifact URL
       run:  echo 'Artifact URL is ${{ steps.artifact-upload-step.outputs.artifact-url }}'
-
+    - uses: geekyeggo/delete-artifact@v4
+      with:
+          name: my-artifact
     # - uses: actions/upload-artifact@v4
     #   with:
     #     name: artifact.zip
