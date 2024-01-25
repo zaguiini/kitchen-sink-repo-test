@@ -25,19 +25,21 @@ jobs:
       with:
         name: my-artifact
         path: artifact.zip
-    - name: Output artifact URL
-      run:  echo 'Artifact URL is ${{ steps.artifact-upload-step.outputs.artifact-url }}'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r .github/workflows/requirements.txt
+    - name: Deploy to WPCOM
+      run: python .github/workflows/deploy.py
+      env:
+        WPCOM_CONNECTION_TOKEN: ${{ secrets.WPCOM_CONNECTION_TOKEN }}
+        ARTIFACT_URL: ${{ steps.artifact-upload-step.outputs.artifact-url }}
+        COMMIT_SHA: ${{ github.sha }}
     - uses: joutvhu/delete-artifact@v2
+      if: always()
       with:
         name: my-artifact
-    # - uses: actions/upload-artifact@v4
-    #   with:
-    #     name: artifact.zip
-    #     path: artifact.zip
-    # - name: Upload to WordPress.com
-    #   uses: fjogeleit/http-request-action@v1
-    #   with:
-    #     url: https://public-api.wordpress.com/wpcom/v2/code-deployment
-    #     method: POST
-    #     file: artifact.zip
-    #     customHeaders: '{"X-WPCOM-Connection-Token":"${{ secrets.WPCOM_CONNECTION_TOKEN }}"}'
